@@ -73,6 +73,43 @@
         }
         .faq-q { font-size: 14px; font-weight: 700; margin-bottom: 8px; display: block; color: #fff; }
         .faq-a { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+           /* --- FAQ CLICKABLE STYLES --- */
+        .faq-q-btn {
+            width: 100%;
+            background: none;
+            border: none;
+            color: #fff;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            outline: none;
+        }
+        
+        .faq-q-btn i {
+            font-size: 12px;
+            transition: 0.3s;
+            color: var(--glam-gold);
+        }
+
+        .faq-q-btn:not(.collapsed) i {
+            transform: rotate(180deg);
+        }
+
+        .faq-a {
+            padding-top: 10px;
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+        
+        .faq-item {
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
@@ -83,7 +120,7 @@
     </div>
 
     <div class="plan-card">
-        <div class="current-badge">Recommended</div>
+        <div class="current-badge">Most Recommended</div>
         <span class="plan-name">GLAM-PREMIUM PACKAGE</span>
         <div class="plan-price">₦14,000</div>
         
@@ -97,26 +134,48 @@
 
         <a href="payment.html"><button class="btn-pay">Continue to Payment</button></a>
     </div>
-
-    <div class="faq-section">
+        <div class="faq-section">
         <h3 class="faq-title">Frequently Asked Questions</h3>
         
-        <div class="faq-item">
-            <span class="faq-q">How do I receive my Welcome Bonus?</span>
-            <p class="faq-a">Immediately after your account activation is confirmed, your ₦10,000 cashback is credited to your All Time Earnings automatically.</p>
-        </div>
+        <div class="accordion" id="faqAccordion">
+            
+            <div class="faq-item">
+                <button class="faq-q-btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                    How do I receive my Welcome Bonus?
+                    <i class="fa fa-chevron-down"></i>
+                </button>
+                <div id="collapseOne" class="collapse" data-bs-parent="#faqAccordion">
+                    <div class="faq-a">
+                        Immediately after your account activation is confirmed, your ₦10,000 cashback is credited to your All Time Earnings automatically.
+                    </div>
+                </div>
+            </div>
 
-        <div class="faq-item">
-            <span class="faq-q">Can I withdraw without activation?</span>
-            <p class="faq-a">No. Account activation is required to unlock the full withdrawal features and verify your digital presence on the ecosystem.</p>
-        </div>
+            <div class="faq-item">
+                <button class="faq-q-btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                    Can I withdraw without activation?
+                    <i class="fa fa-chevron-down"></i>
+                </button>
+                <div id="collapseTwo" class="collapse" data-bs-parent="#faqAccordion">
+                    <div class="faq-a">
+                        No. Account activation is required to unlock the full withdrawal features and verify your digital presence on the ecosystem.
+                    </div>
+                </div>
+            </div>
 
-        <div class="faq-item">
-            <span class="faq-q">Is the activation fee a one-time payment?</span>
-            <p class="faq-a">Yes. Your GLAM-PREMIUM activation is a one-time fee that gives you lifetime access to our digital routines and asset-building tools.</p>
+            <div class="faq-item">
+                <button class="faq-q-btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                    Is the activation fee a one-time payment?
+                    <i class="fa fa-chevron-down"></i>
+                </button>
+                <div id="collapseThree" class="collapse" data-bs-parent="#faqAccordion">
+                    <div class="faq-a">
+                        Yes. Your GLAM-PREMIUM activation is a one-time fee that gives you lifetime access to our digital routines and asset-building tools.
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
-</div>
-
 </body>
 </html>
