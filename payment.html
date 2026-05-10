@@ -3,162 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Gateway | Glamour</title>
+    <title>Secure Payment | Glamour</title>
     
+    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
 
     <style>
         :root {
             --glam-gold: #dbb445;
-            --glam-dark: #000000;
-            --glam-card: #0a0a0a;
-            --glam-glass: rgba(255, 255, 255, 0.05);
-            --text-muted: #888888;
+            --glam-dark: #050505;
+            --glam-card: #0f0f0f;
+            --glam-glass: rgba(255, 255, 255, 0.03);
+            --text-muted: #a0a0a0;
         }
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--glam-dark);
+            background-image: radial-gradient(circle at top right, rgba(219, 180, 69, 0.05), transparent);
             color: #ffffff;
             margin: 0;
-            padding-bottom: 40px;
+            padding-bottom: 60px;
         }
 
-        .wrapper { padding: 20px; max-width: 500px; margin: 0 auto; }
+        .wrapper { padding: 20px; max-width: 480px; margin: 0 auto; }
 
-        .header-box { text-align: center; margin: 20px 0 30px; }
-        .step-tag { color: var(--glam-gold); font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
-        .main-title { font-size: 20px; font-weight: 800; margin-top: 5px; }
+        /* --- HEADER & TIMER --- */
+        .header-box { text-align: center; margin: 30px 0; }
+        .step-tag { color: var(--glam-gold); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; }
+        .main-title { font-size: 24px; font-weight: 900; margin-top: 8px; letter-spacing: -0.5px; }
+        
+        .timer-container {
+            background: rgba(219, 180, 69, 0.1);
+            border: 1px solid rgba(219, 180, 69, 0.2);
+            padding: 8px 15px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        #countdown { font-weight: 800; color: var(--glam-gold); font-variant-numeric: tabular-nums; }
 
-        /* --- PAYMENT INFO CARD --- */
+        /* --- ENHANCED PAYMENT CARD --- */
         .payment-card {
             background: var(--glam-card);
             border: 1px solid var(--glam-glass);
-            border-radius: 20px;
-            padding: 25px;
+            border-radius: 24px;
+            padding: 30px;
             margin-bottom: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payment-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, transparent, var(--glam-gold), transparent);
         }
 
         .info-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--glam-glass);
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         .info-row:last-child { border: none; }
 
-        .label { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
-        .value { font-size: 16px; font-weight: 800; color: #fff; }
-        .copy-btn { color: var(--glam-gold); cursor: pointer; padding: 5px; transition: 0.2s; }
-        .copy-btn:active { transform: scale(0.8); }
-
-        /* --- ACTION BUTTONS --- */
-        .action-title { font-size: 12px; font-weight: 800; text-align: center; margin-bottom: 15px; color: var(--text-muted); }
-        
-        .btn-platform {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            width: 100%;
-            padding: 16px;
-            border-radius: 15px;
-            font-weight: 800;
-            font-size: 14px;
-            margin-bottom: 12px;
-            border: none;
-            text-transform: uppercase;
-            transition: 0.3s;
-            text-decoration: none;
-        }
-
-        .btn-whatsapp { background: #25D366; color: #fff; }
-        .btn-telegram { background: #0088cc; color: #fff; }
-        
-        .alert-box {
-            background: rgba(219, 180, 69, 0.05);
-            border: 1px dashed var(--glam-gold);
-            padding: 15px;
-            border-radius: 12px;
-            font-size: 12px;
-            color: #ddd;
-            text-align: center;
-            margin-top: 20px;
-        }
-                /* --- LIVE NOTIFICATION POPUP --- */
-        #notification-toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(150%);
-            background: rgba(10, 10, 10, 0.9);
-            border: 1px solid var(--glam-gold);
-            backdrop-filter: blur(10px);
-            padding: 12px 20px;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            z-index: 9999;
-            width: 90%;
-            max-width: 380px;
-            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        }
-
-        #notification-toast.show {
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .toast-icon {
-            background: var(--glam-gold);
-            color: #000;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            flex-shrink: 0;
-        }
-
-        .toast-content {
-            font-size: 11px;
-            color: #fff;
-            line-height: 1.4;
-        }
-
-        .toast-content strong {
+        .label { font-size: 10px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .value { font-size: 17px; font-weight: 800; color: #fff; margin-top: 4px; }
+        .copy-btn { 
+            background: rgba(219, 180, 69, 0.1);
             color: var(--glam-gold);
-            display: block;
-            font-size: 12px;
+            width: 35px; height: 35px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 10px;
+            cursor: pointer; transition: 0.3s;
         }
+        .copy-btn:hover { background: var(--glam-gold); color: #000; }
+
+        /* --- BUTTONS --- */
+        .btn-platform {
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            width: 100%; padding: 18px; border-radius: 18px;
+            font-weight: 800; font-size: 14px; margin-bottom: 15px;
+            border: none; text-transform: uppercase; transition: 0.3s; text-decoration: none;
+        }
+        .btn-telegram { background: #0088cc; color: #fff; box-shadow: 0 10px 20px rgba(0, 136, 204, 0.2); }
+        .btn-telegram:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(0, 136, 204, 0.3); color: #fff; }
+
+        .alert-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--glam-glass);
+            padding: 20px; border-radius: 18px;
+            font-size: 12px; color: #888; text-align: center;
+            line-height: 1.6;
+        }
+
+        /* --- TOAST POPUP --- */
+        #notification-toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(150%);
+            background: rgba(20, 20, 20, 0.95);
+            border: 1px solid var(--glam-gold);
+            backdrop-filter: blur(15px);
+            padding: 15px 25px; border-radius: 50px;
+            display: flex; align-items: center; gap: 15px;
+            z-index: 9999; width: 90%; max-width: 400px;
+            transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        #notification-toast.show { transform: translateX(-50%) translateY(0); }
+        .toast-icon { color: var(--glam-gold); font-size: 18px; }
+        .toast-content { font-size: 12px; color: #eee; }
+        .toast-content strong { color: var(--glam-gold); }
     </style>
 </head>
 <body>
 
 <div class="wrapper">
     <div class="header-box">
-        <span class="step-tag">Step 2: Finalize Payment</span>
-        <h1 class="main-title">Bank Transfer</h1>
+        <span class="step-tag">Secure Checkout</span>
+        <h1 class="main-title">Direct Bank Transfer</h1>
+        
+        <div class="timer-container">
+            <i class="fa fa-clock-o"></i>
+            <span>Expires in: <span id="countdown">10:00</span></span>
+        </div>
     </div>
 
     <div class="payment-card">
         <div class="info-row">
             <div>
-                <span class="label">Amount to Pay</span>
-                <div class="value" id="pay-amount">₦14,000</div>
+                <span class="label">Amount Payable</span>
+                <div class="value">₦14,000</div>
             </div>
-            <i class="fa fa-copy copy-btn" onclick="copyText('14000', 'Amount')"></i>
+            <div class="copy-btn" onclick="copyText('14000', 'Amount')">
+                <i class="fa fa-clone"></i>
+            </div>
         </div>
 
         <div class="info-row">
             <div>
-                <span class="label">Bank Name</span>
+                <span class="label">Receiving Bank</span>
                 <div class="value">MONIEPOINT MFB</div>
             </div>
         </div>
@@ -166,9 +157,11 @@
         <div class="info-row">
             <div>
                 <span class="label">Account Number</span>
-                <div class="value" id="acct-num">7073734725</div>
+                <div class="value">7073734725</div>
             </div>
-            <i class="fa fa-copy copy-btn" onclick="copyText('7073734725', 'Account Number')"></i>
+            <div class="copy-btn" onclick="copyText('7073734725', 'Account Number')">
+                <i class="fa fa-clone"></i>
+            </div>
         </div>
 
         <div class="info-row">
@@ -179,75 +172,98 @@
         </div>
     </div>
 
-    <p class="action-title">SEND PROOF OF PAYMENT VIA:</p>
-
-
+    <p class="action-title text-center mb-3" style="font-size: 11px; font-weight: 700; color: var(--text-muted);">UPLOAD RECEIPT TO AGENT</p>
 
     <a href="https://t.me/Coachnancy5?text=I%20have%20made%20payment%20for%20Glam-Premium" class="btn-platform btn-telegram">
-    <i class="fa fa-paper-plane"></i> Confirm on Telegram
-</a>
-
+        <i class="fa fa-paper-plane"></i> Submit Proof via Telegram
+    </a>
 
     <div class="alert-box">
-        <i class="fa fa-info-circle"></i> After payment, send a screenshot of your receipt to any of the platforms above for instant activation.
+        <i class="fa fa-shield" style="color: var(--glam-gold); margin-bottom: 10px; font-size: 18px;"></i><br>
+        Your payment is protected. Once sent, our system verifies the transaction and activates your dashboard within 2-5 minutes.
     </div>
 </div>
 
+<!-- Notification Toast -->
+<div id="notification-toast">
+    <div class="toast-icon"><i class="fa fa-check-circle"></i></div>
+    <div class="toast-content" id="toast-text"></div>
+</div>
+
+<!-- JS Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
+    // 1. SweetAlert Copy Function
     function copyText(text, label) {
         navigator.clipboard.writeText(text).then(() => {
-            alert(label + " copied to clipboard!");
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                background: '#0f0f0f',
+                color: '#fff'
+            });
+            Toast.fire({
+                icon: 'success',
+                title: `${label} copied successfully!`
+            });
         });
     }
-        const names = [
+
+    // 2. Countdown Timer Logic
+    function startTimer(duration, display) {
+        let timer = duration, minutes, seconds;
+        setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                timer = duration; // Reset timer
+            }
+        }, 1000);
+    }
+
+    window.onload = function () {
+        let tenMinutes = 60 * 10,
+        display = document.querySelector('#countdown');
+        startTimer(tenMinutes, display);
+    };
+
+    // 3. Live Notification Logic
+    const names = [
         "Chinedu O.", "Blessing E.", "Abubakar M.", "Tunde W.", "Gift A.", 
         "Favour Y.", "Emeka J.", "Sarah U.", "Ibrahim K.", "Chioma R.", 
         "Olawale P.", "Ngozi S.", "David B.", "Precious Q.", "Musa T.", 
-        "Hassan V.", "Anita L.", "Kelvin Z.", "Chinaza D.", "Okon E.", 
-        "Tobi M.", "Amarachi G.", "Yusuf I.", "Joy O.", "Samuel X.", 
-        "Ebele C.", "Victor N.", "Mercy W.", "Babatunde H.", "Esther K."
+        "Hassan V.", "Anita L.", "Kelvin Z.", "Chinaza D.", "Okon E."
     ];
 
     const toast = document.getElementById('notification-toast');
     const toastText = document.getElementById('toast-text');
 
     function showRandomNotification() {
-        // Pick a random name
         const randomName = names[Math.floor(Math.random() * names.length)];
-        
-        // 50% chance for activation or withdrawal
         const isActivation = Math.random() > 0.5;
         
-        let message = "";
-        if (isActivation) {
-            message = `<strong>${randomName}</strong> Just activated GLAM-PREMIUM Package!`;
-        } else {
-            message = `<strong>${randomName}</strong> Withdrew ₦10,000 Welcome Bonus immediately!`;
-        }
+        toastText.innerHTML = isActivation 
+            ? `<strong>${randomName}</strong> just activated GLAM-PREMIUM!` 
+            : `<strong>${randomName}</strong> just withdrew ₦10,000 Bonus!`;
 
-        toastText.innerHTML = message;
-        
-        // Slide Up
         toast.classList.add('show');
-
-        // Slide Down after 4 seconds
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 4000);
+        setTimeout(() => toast.classList.remove('show'), 4000);
     }
 
-    // Start showing notifications every 8 seconds
     setInterval(showRandomNotification, 8000);
-
-    // Show first one after 3 seconds
-    setTimeout(showRandomNotification, 3000);
+    setTimeout(showRandomNotification, 2000);
 </script>
-    <div id="notification-toast">
-        <div class="toast-icon">
-            <i class="fa fa-bolt"></i>
-        </div>
-        <div class="toast-content" id="toast-text">
-        </div>
-    </div>
+
 </body>
 </html>
+
