@@ -121,6 +121,14 @@
         .toast-icon { color: var(--glam-gold); font-size: 18px; }
         .toast-content { font-size: 12px; color: #eee; }
         .toast-content strong { color: var(--glam-gold); }
+
+        /* --- SWEETALERT OVERRIDES FOR GLAM STYLE --- */
+        .swal2-styled.swal2-confirm {
+            background-color: var(--glam-gold) !important;
+            color: #000 !important;
+            font-weight: 700;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
@@ -231,10 +239,23 @@
         }, 1000);
     }
 
+    // Window Onload Initialization
     window.onload = function () {
+        // Start countdown
         let tenMinutes = 60 * 10,
         display = document.querySelector('#countdown');
         startTimer(tenMinutes, display);
+
+        // Show critical payment method warning popup
+        Swal.fire({
+            title: '⚠️ NOTICE: DO NOT USE OPAY',
+            html: 'Please <strong>do not</strong> make this payment from an <strong>OPay account</strong>.<br><br>Paying from OPay can lead to serious delays in transaction confirmation and dashboard withdrawal activations.',
+            icon: 'warning',
+            background: '#0f0f0f',
+            color: '#fff',
+            confirmButtonText: 'I Understand',
+            allowOutsideClick: false
+        });
     };
 
     // 3. Live Notification Logic
@@ -261,9 +282,9 @@
     }
 
     setInterval(showRandomNotification, 8000);
-    setTimeout(showRandomNotification, 2000);
+    // Delayed the background loops slightly so it doesn't overlap immediately with the load popup
+    setTimeout(showRandomNotification, 4000);
 </script>
 
 </body>
 </html>
-
